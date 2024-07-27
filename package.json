@@ -1,7 +1,7 @@
 {
-  "name": "ph-university-server",
+  "name": "meeting-manager-backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "This is an agency where we offer co-working spaces for meetings and discussions. To streamline the booking process, we develop this web application for managing room reservations.",
   "main": "index.js",
   "scripts": {
     "start:prod": "node ./dist/server.js",
@@ -14,7 +14,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Abul Fozol Jumman",
   "license": "ISC",
   "dependencies": {
     "@types/cookie-parser": "^1.4.7",
