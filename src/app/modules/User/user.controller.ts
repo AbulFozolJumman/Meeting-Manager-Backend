@@ -5,8 +5,8 @@ import UserValidationSchema from './user.validation';
 const createUser = async (req: Request, res: Response) => {
   try {
     const userData = req.body;
-    const validatedData = UserValidationSchema.parse(userData);
-    const result = await UserServices.createUserIntoDB(validatedData);
+    const validatedUserData = UserValidationSchema.parse(userData);
+    const result = await UserServices.createUserIntoDB(validatedUserData);
     res.status(200).json({
       success: true,
       statusCode: 200,
