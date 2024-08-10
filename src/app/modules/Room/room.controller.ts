@@ -6,7 +6,7 @@ const createRoom = async (req: Request, res: Response) => {
   try {
     const roomData = req.body;
     const validatedRoomData = RoomValidationSchema.parse(roomData);
-    const result = RoomServices.createRoomIntoDB(validatedRoomData);
+    const result = await RoomServices.createRoomIntoDB(validatedRoomData);
     res.status(200).json({
       success: true,
       statusCode: 200,
