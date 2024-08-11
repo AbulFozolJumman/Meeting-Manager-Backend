@@ -6,6 +6,12 @@ const createRoomIntoDB = async (roomData: TRoom) => {
   return result;
 };
 
+const getSingleRoomFromDB = async (id: string) => {
+  const result = await Room.findById(id);
+  return result;
+};
+
 export const RoomServices = {
   createRoomIntoDB,
+  getSingleRoomFromDB,
 };

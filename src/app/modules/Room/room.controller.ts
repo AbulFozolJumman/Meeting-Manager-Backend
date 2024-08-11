@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from 'express';
 import RoomValidationSchema from './room.validation';
 import { RoomServices } from './room.service';
@@ -13,7 +14,26 @@ const createRoom = async (req: Request, res: Response) => {
       message: 'Room added successfully',
       data: result,
     });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      statusCode: 500,
+      message: err.message,
+      data: [],
+    });
+  }
+};
+
+const getSingleRoom = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const result = await RoomServices.getSingleRoomFromDB(id);
+    res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: 'Room retrieved successfully',
+      data: result,
+    });
   } catch (err: any) {
     res.status(500).json({
       success: false,
@@ -26,4 +46,5 @@ const createRoom = async (req: Request, res: Response) => {
 
 export const RoomController = {
   createRoom,
+  getSingleRoom,
 };
