@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const RoomValidationSchema = z.object({
+const createRoomValidationSchema = z.object({
   name: z.string(),
   roomNo: z.number(),
   floorNo: z.number(),
@@ -10,4 +10,17 @@ const RoomValidationSchema = z.object({
   isDeleted: z.boolean().default(false),
 });
 
-export default RoomValidationSchema;
+const updateRoomValidationSchema = z.object({
+  name: z.string().optional(),
+  roomNo: z.number().optional(),
+  floorNo: z.number().optional(),
+  capacity: z.number().optional(),
+  pricePerSlot: z.number().optional(),
+  amenities: z.array(z.string()).optional(),
+  isDeleted: z.boolean().default(false).optional(),
+});
+
+export const RoomValidation = {
+  createRoomValidationSchema,
+  updateRoomValidationSchema,
+};
