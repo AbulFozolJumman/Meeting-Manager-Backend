@@ -44,7 +44,27 @@ const getSingleRoom = async (req: Request, res: Response) => {
   }
 };
 
+const getAllRoom = async (req: Request, res: Response) => {
+  try {
+    const result = await RoomServices.getAllRoomFromDB();
+    res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: 'Rooms retrieved successfully',
+      data: result,
+    });
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      statusCode: 500,
+      message: err.message,
+      data: [],
+    });
+  }
+};
+
 export const RoomController = {
   createRoom,
   getSingleRoom,
+  getAllRoom,
 };
