@@ -11,4 +11,6 @@ router.get('/', RoomController.getAllRoom);
 
 router.put('/:id', RoomController.updateRoom);
 
+router.delete('/:id', RoomController.deleteRoom);
+
 export const RoomRoutes = router;
