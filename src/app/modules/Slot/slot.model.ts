@@ -12,16 +12,17 @@ const SlotSchema = new Schema<TSlot>({
     required: true,
   },
   startTime: {
-    type: Date,
+    type: String,
     required: true,
   },
   endTime: {
-    type: Date,
+    type: String,
     required: true,
   },
   isBooked: {
     type: Boolean,
     required: true,
+    default: false,
   },
 });
 

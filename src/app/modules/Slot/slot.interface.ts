@@ -3,7 +3,7 @@ import { Types } from 'mongoose';
 export type TSlot = {
   room: Types.ObjectId;
   date: Date;
-  startTime: Date;
-  endTime: Date;
+  startTime: string;
+  endTime: string;
   isBooked: boolean;
 };
