@@ -24,6 +24,26 @@ const createSlot = async (req: Request, res: Response) => {
   }
 };
 
+const getAllSlot = async (req: Request, res: Response) => {
+  try {
+    const result = await SlotService.getAllSlotFromDB();
+    res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: 'Available slots retrieved successfully',
+      data: result,
+    });
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      statusCode: 500,
+      message: err.message,
+      data: [],
+    });
+  }
+};
+
 export const SlotController = {
   createSlot,
+  getAllSlot,
 };

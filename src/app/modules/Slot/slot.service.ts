@@ -42,6 +42,12 @@ const createSlotsIntoDB = async (slotData: TSlot) => {
   return slots;
 };
 
+const getAllSlotFromDB = async () => {
+  const result = await Slot.find().populate('room');
+  return result;
+};
+
 export const SlotService = {
   createSlotsIntoDB,
+  getAllSlotFromDB,
 };
