@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from 'express';
-// import SlotValidationSchema from './slot.validation';
+import SlotValidationSchema from './slot.validation';
 import { SlotService } from './slot.service';
 
 const createSlot = async (req: Request, res: Response) => {
   try {
     const slotsData = req.body;
-    // const validatedSlotsData = SlotValidationSchema.parse(slotsData);
-    const result = await SlotService.createSlotsIntoDB(slotsData);
+    const validatedSlotsData = SlotValidationSchema.parse(slotsData);
+    const result = await SlotService.createSlotsIntoDB(validatedSlotsData);
     res.status(200).json({
       success: true,
       statusCode: 200,
@@ -24,9 +24,13 @@ const createSlot = async (req: Request, res: Response) => {
   }
 };
 
-const getAllSlot = async (req: Request, res: Response) => {
+const getAvailableSlots = async (req: Request, res: Response) => {
   try {
-    const result = await SlotService.getAllSlotFromDB();
+    const { date, roomId } = req.query;
+    const result = await SlotService.getAvailableSlotsFromDB(
+      date as string,
+      roomId as string,
+    );
     res.status(200).json({
       success: true,
       statusCode: 200,
@@ -45,5 +49,5 @@ const getAllSlot = async (req: Request, res: Response) => {
 
 export const SlotController = {
   createSlot,
-  getAllSlot,
+  getAvailableSlots,
 };

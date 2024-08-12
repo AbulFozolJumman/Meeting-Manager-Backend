@@ -8,7 +8,7 @@ const SlotSchema = new Schema<TSlot>({
     ref: 'Room',
   },
   date: {
-    type: Date,
+    type: String,
     required: true,
   },
   startTime: {

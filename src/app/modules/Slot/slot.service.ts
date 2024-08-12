@@ -42,12 +42,25 @@ const createSlotsIntoDB = async (slotData: TSlot) => {
   return slots;
 };
 
-const getAllSlotFromDB = async () => {
-  const result = await Slot.find().populate('room');
+const getAvailableSlotsFromDB = async (
+  date?: string,
+  roomId?: string,
+): Promise<TSlot[]> => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const query: any = { isBooked: false };
+
+  if (date) {
+    query.date = date;
+  }
+
+  if (roomId) {
+    query.room = roomId;
+  }
+  const result = await Slot.find(query).populate('room');
   return result;
 };
 
 export const SlotService = {
   createSlotsIntoDB,
-  getAllSlotFromDB,
+  getAvailableSlotsFromDB,
 };

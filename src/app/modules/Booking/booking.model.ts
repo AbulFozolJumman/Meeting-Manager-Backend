@@ -18,7 +18,7 @@ const BookingSchema = new Schema<TBooking>({
     ref: 'User',
   },
   date: {
-    type: Date,
+    type: String,
     required: true,
   },
   totalAmount: {
@@ -33,6 +33,7 @@ const BookingSchema = new Schema<TBooking>({
   isDeleted: {
     type: Boolean,
     required: true,
+    default: false,
   },
 });
 
