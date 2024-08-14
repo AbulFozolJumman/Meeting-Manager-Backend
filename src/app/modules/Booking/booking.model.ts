@@ -29,6 +29,7 @@ const BookingSchema = new Schema<TBooking>({
     type: String,
     enum: ['confirmed', 'unconfirmed', 'canceled'],
     required: true,
+    default: 'unconfirmed',
   },
   isDeleted: {
     type: Boolean,
