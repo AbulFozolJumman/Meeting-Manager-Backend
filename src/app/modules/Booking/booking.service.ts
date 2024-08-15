@@ -4,26 +4,22 @@ import Room from '../Room/room.model';
 import { TBooking } from './booking.interface';
 
 const createBookingIntoDB = async (bookingData: TBooking) => {
-  const { room, slots, user, date } = bookingData;
+  const { date, slots, room, user } = bookingData;
 
-  // Ensure the room is found
+  // Find the room to get the price per slot
   const roomDetails = await Room.findById(room);
   if (!roomDetails) {
     throw new Error('Room not found');
   }
+
+  // Calculate total amount based on pricePerSlot and number of slots
+  const totalAmount = roomDetails.pricePerSlot * slots.length;
 
   // Update each slot as booked
   await Slot.updateMany(
     { _id: { $in: slots }, room: room, date: date },
     { isBooked: true },
   );
-
-  // Calculate total amount based on pricePerSlot and number of slots
-  const totalAmount = 200;
-
-  if (!totalAmount || isNaN(totalAmount)) {
-    throw new Error('Invalid totalAmount calculation');
-  }
 
   // Create booking
   const booking = await Booking.create({
@@ -35,8 +31,9 @@ const createBookingIntoDB = async (bookingData: TBooking) => {
     isConfirmed: 'unconfirmed',
   });
 
-  // Populate room, slots, and user details for the response
-  const populatedBooking = await booking.populate('room user slot');
+  const populatedBooking = await (
+    await (await booking.populate('room')).populate('slots')
+  ).populate('user');
 
   return populatedBooking;
 };

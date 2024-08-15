@@ -1,7 +1,7 @@
 import { model, Schema } from 'mongoose';
 import { TBooking } from './booking.interface';
 
-const BookingSchema = new Schema<TBooking>({
+const BookingSchema = new Schema({
   room: {
     type: Schema.Types.ObjectId,
     required: true,
