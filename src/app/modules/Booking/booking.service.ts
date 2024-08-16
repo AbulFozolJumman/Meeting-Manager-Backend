@@ -2,9 +2,16 @@ import Booking from './booking.model';
 import Slot from '../Slot/slot.model';
 import Room from '../Room/room.model';
 import { TBooking } from './booking.interface';
+import User from '../User/user.model';
 
 const createBookingIntoDB = async (bookingData: TBooking) => {
   const { date, slots, room, user } = bookingData;
+
+  // Check if user exist
+  const isUserExists = await User.findById(user);
+  if (!isUserExists) {
+    throw new Error('User not found');
+  }
 
   // Find the room to get the price per slot
   const roomDetails = await Room.findById(room);
@@ -17,7 +24,7 @@ const createBookingIntoDB = async (bookingData: TBooking) => {
 
   // Update each slot as booked
   await Slot.updateMany(
-    { _id: { $in: slots }, room: room, date: date },
+    { _id: { $in: slots }, room: room },
     { isBooked: true },
   );
 
@@ -47,6 +54,8 @@ const getUserBookingsFromDB = async (id: string) => {
   const result = await Booking.find({ user: id }).populate('slots room');
   return result;
 };
+
+// Update Booking(validation, service, controller, route)
 
 export const BookingService = {
   createBookingIntoDB,

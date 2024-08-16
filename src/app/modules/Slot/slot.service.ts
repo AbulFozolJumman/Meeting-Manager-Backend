@@ -1,10 +1,16 @@
+import Room from '../Room/room.model';
 import { TSlot } from './slot.interface';
 import Slot from './slot.model';
 
 const createSlotsIntoDB = async (slotData: TSlot) => {
   const { room, date, startTime, endTime } = slotData;
 
-  const slotDuration = 60; // 60 minutes
+  const roomData = await Room.findById(room);
+  if (!roomData) {
+    throw new Error('Room not found');
+  }
+
+  const slotDuration = 60;
   const startMinutes =
     parseInt(startTime.split(':')[0]) * 60 + parseInt(startTime.split(':')[1]);
   const endMinutes =
