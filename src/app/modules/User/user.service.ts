@@ -10,10 +10,14 @@ const registerUserIntoDB = async (userData: TUser) => {
     throw new Error('User with this email already exists');
   }
 
+  // Hash the password before saving it
   const hashedPassword = await bcrypt.hash(userData.password, 10);
   const user = new User({ ...userData, password: hashedPassword });
   await user.save();
-  return user;
+
+  // Select all fields except password
+  const userWithoutPassword = await User.findById(user._id).select('-password');
+  return userWithoutPassword;
 };
 
 const loginUserFromDB = async ({
@@ -28,11 +32,13 @@ const loginUserFromDB = async ({
     throw new Error('User not found');
   }
 
+  // Validate the password
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!isPasswordValid) {
     throw new Error('Invalid credentials');
   }
 
+  // Generate JWT tokens
   const jwtPayload = {
     userId: user.id,
     role: user.role,
@@ -48,10 +54,13 @@ const loginUserFromDB = async ({
     config.jwt_refresh_secret as string,
     config.jwt_refresh_expires_in as string,
   );
+
+  const userWithoutPassword = await User.findById(user._id).select('-password');
+
   return {
     accessToken,
     refreshToken,
-    user,
+    user: userWithoutPassword,
   };
 };
 
