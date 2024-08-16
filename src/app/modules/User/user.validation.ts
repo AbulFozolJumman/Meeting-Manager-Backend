@@ -5,7 +5,7 @@ export const registerUserSchema = z.object({
   name: z.string().min(3),
   email: z.string().email().min(9),
   password: z.string().min(8),
-  phone: z.number().min(1),
+  phone: z.string().min(1),
   address: z.string().min(1),
   role: z.enum([Roles.admin, Roles.user]),
 });

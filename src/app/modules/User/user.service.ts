@@ -1,4 +1,6 @@
+import httpStatus from 'http-status';
 import config from '../../config';
+import AppError from '../../errors/AppError';
 import { createToken } from '../../utils/jwt';
 import { TUser } from './user.interface';
 import User from './user.model';
@@ -29,13 +31,13 @@ const loginUserFromDB = async ({
 }) => {
   const user = await User.findOne({ email });
   if (!user) {
-    throw new Error('User not found');
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
   }
 
   // Validate the password
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!isPasswordValid) {
-    throw new Error('Invalid credentials');
+    throw new AppError(httpStatus.FORBIDDEN, 'Password do not matched');
   }
 
   // Generate JWT tokens

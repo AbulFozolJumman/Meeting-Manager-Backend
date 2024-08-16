@@ -9,14 +9,17 @@ import { Roles } from '../modules/User/user.enumeration';
 
 const auth = (...requiredRoles: Roles[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const token = req.headers.authorization;
+    const authHeader = req.headers.authorization;
 
-    // checking if the token is missing
-    if (!token) {
+    // Check if the token is missing or not properly formatted
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
       throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized!');
     }
 
-    // checking if the given token is valid
+    // Extract the token from the "Bearer" format
+    const token = authHeader.split(' ')[1];
+
+    // Validate the token
     const decoded = jwt.verify(
       token,
       config.jwt_access_secret as string,
@@ -24,17 +27,21 @@ const auth = (...requiredRoles: Roles[]) => {
 
     const { role, userId } = decoded;
 
-    // checking if the user is exist
+    // Check if the user exists
     const user = await User.findById(userId);
-
     if (!user) {
-      throw new AppError(httpStatus.NOT_FOUND, 'This user is not found !');
+      throw new AppError(httpStatus.NOT_FOUND, 'No Data Found');
     }
 
+    // Check if the user has the required role
     if (requiredRoles && !requiredRoles.includes(role)) {
-      throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized!');
+      throw new AppError(
+        httpStatus.UNAUTHORIZED,
+        'You have no access to this route',
+      );
     }
 
+    // Attach the user information to the request object
     req.user = decoded as JwtPayload;
     next();
   });

@@ -1,9 +1,11 @@
 import express from 'express';
 import { RoomController } from './room.controller';
+import auth from '../../middlewares/auth';
+import { Roles } from '../User/user.enumeration';
 
 const router = express.Router();
 
-router.post('/', RoomController.createRoom);
+router.post('/', auth(Roles.admin), RoomController.createRoom);
 
 router.get('/:id', RoomController.getSingleRoom);
 

@@ -13,11 +13,11 @@ import { TErrorSources } from '../interface/error';
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   //setting default values
   let statusCode = 500;
-  let message = 'Something went wrong!';
+  let message = 'Not found';
   let errorSources: TErrorSources = [
     {
       path: '',
-      message: 'Something went wrong',
+      message: 'Not found',
     },
   ];
 
@@ -63,22 +63,11 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   //ultimate return
   return res.status(statusCode).json({
     success: false,
+    statusCode,
     message,
     errorSources,
-    err,
     stack: config.NODE_ENV === 'development' ? err?.stack : null,
   });
 };
 
 export default globalErrorHandler;
-
-//pattern
-/*
-success
-message
-errorSources:[
-  path:'',
-  message:''
-]
-stack
-*/

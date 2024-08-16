@@ -2,28 +2,29 @@
 import { Request, Response } from 'express';
 import { RoomServices } from './room.service';
 import { RoomValidation } from './room.validation';
+import catchAsync from '../../utils/catchAsync';
+import sendResponse from '../../utils/sendResponse';
+import httpStatus from 'http-status';
 
-const createRoom = async (req: Request, res: Response) => {
-  try {
-    const roomData = req.body;
-    const validatedRoomData =
-      RoomValidation.createRoomValidationSchema.parse(roomData);
-    const result = await RoomServices.createRoomIntoDB(validatedRoomData);
-    res.status(200).json({
-      success: true,
-      statusCode: 200,
-      message: 'Room added successfully',
-      data: result,
-    });
-  } catch (err: any) {
-    res.status(500).json({
+const createRoom = catchAsync(async (req: Request, res: Response) => {
+  const user = req.user;
+  if (user.role !== 'admin') {
+    return res.status(httpStatus.FORBIDDEN).json({
       success: false,
-      statusCode: 500,
-      message: err.message,
-      data: [],
+      statusCode: httpStatus.FORBIDDEN,
+      message: 'Access denied. Only admins can create rooms.',
     });
   }
-};
+
+  const result = await RoomServices.createRoomIntoDB(req.body);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Room added successfully',
+    data: result,
+  });
+});
 
 const getSingleRoom = async (req: Request, res: Response) => {
   try {
