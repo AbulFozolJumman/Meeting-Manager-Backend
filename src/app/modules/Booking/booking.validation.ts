@@ -10,9 +10,6 @@ const BookingValidationSchema = z.object({
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, {
     message: "Invalid date format. Expected 'YYYY-MM-DD'.",
   }),
-  // totalAmount: z
-  //   .number()
-  //   .min(0, { message: 'Total amount must be a positive number.' }),
   isConfirmed: z
     .enum(['confirmed', 'unconfirmed', 'canceled'])
     .default('unconfirmed'),

@@ -1,5 +1,6 @@
 import { model, Schema } from 'mongoose';
 import { TUser } from './user.interface';
+import { Roles } from './user.enumeration';
 
 const UserSchema = new Schema<TUser>({
   name: {
@@ -26,8 +27,7 @@ const UserSchema = new Schema<TUser>({
   role: {
     type: String,
     required: true,
-    enum: ['admin', 'user'],
-    default: 'user',
+    enum: Object.values(Roles),
   },
 });
 
