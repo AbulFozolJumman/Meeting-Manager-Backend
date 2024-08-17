@@ -56,9 +56,19 @@ const getUserBookingsFromDB = async (id: string) => {
 };
 
 // Update Booking(validation, service, controller, route)
+const updateBookingIntoDB = async (
+  id: string,
+  bookingData: Partial<TBooking>,
+) => {
+  const result = await Booking.findByIdAndUpdate(id, bookingData, {
+    new: true,
+  });
+  return result;
+};
 
 export const BookingService = {
   createBookingIntoDB,
   getAllBookingsFromDB,
   getUserBookingsFromDB,
+  updateBookingIntoDB,
 };
