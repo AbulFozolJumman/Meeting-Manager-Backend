@@ -51,11 +51,12 @@ const getAllBookingsFromDB = async () => {
 };
 
 const getUserBookingsFromDB = async (id: string) => {
-  const result = await Booking.find({ user: id }).populate('slots room');
+  const result = await Booking.find({ user: id })
+    .populate('slots room')
+    .select('-user');
   return result;
 };
 
-// Update Booking(validation, service, controller, route)
 const updateBookingIntoDB = async (
   id: string,
   bookingData: Partial<TBooking>,
@@ -66,9 +67,21 @@ const updateBookingIntoDB = async (
   return result;
 };
 
+const deleteBookingIntoDB = async (id: string) => {
+  const result = await Booking.findByIdAndUpdate(
+    id,
+    {
+      isDeleted: true,
+    },
+    { new: true },
+  );
+  return result;
+};
+
 export const BookingService = {
   createBookingIntoDB,
   getAllBookingsFromDB,
   getUserBookingsFromDB,
   updateBookingIntoDB,
+  deleteBookingIntoDB,
 };

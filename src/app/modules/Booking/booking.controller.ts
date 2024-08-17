@@ -1,9 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from 'http-status';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import { BookingService } from './booking.service';
-import { Request, Response } from 'express';
 
 const createBooking = catchAsync(async (req, res) => {
   const result = await BookingService.createBookingIntoDB(req.body);
@@ -38,29 +36,30 @@ const updateBooking = catchAsync(async (req, res) => {
   });
 });
 
-const getUserBooking = async (req: Request, res: Response) => {
-  try {
-    const userId = req.user._id;
-    const result = await BookingService.getUserBookingsFromDB(userId);
-    res.status(200).json({
-      success: true,
-      statusCode: httpStatus.OK,
-      message: 'User bookings retrieved successfully',
-      data: result,
-    });
-  } catch (err: any) {
-    res.status(500).json({
-      success: false,
-      statusCode: 500,
-      message: err.message,
-      data: [],
-    });
-  }
-};
+const deleteBooking = catchAsync(async (req, res) => {
+  const result = await BookingService.deleteBookingIntoDB(req.params.id);
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Booking deleted successfully',
+    data: result,
+  });
+});
+
+const getUserBooking = catchAsync(async (req, res) => {
+  const result = await BookingService.getUserBookingsFromDB(req.user.userId);
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'User bookings retrieved successfully',
+    data: result,
+  });
+});
 
 export const BookingController = {
   createBooking,
   getAllBooking,
   getUserBooking,
   updateBooking,
+  deleteBooking,
 };
