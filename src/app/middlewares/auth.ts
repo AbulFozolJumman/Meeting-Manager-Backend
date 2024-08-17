@@ -13,7 +13,10 @@ const auth = (...requiredRoles: Roles[]) => {
 
     // Check if the token is missing or not properly formatted
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized!');
+      throw new AppError(
+        httpStatus.UNAUTHORIZED,
+        'You have no access to this route',
+      );
     }
 
     // Extract the token from the "Bearer" format

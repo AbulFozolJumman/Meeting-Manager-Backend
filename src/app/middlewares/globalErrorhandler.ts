@@ -13,11 +13,11 @@ import { TErrorSources } from '../interface/error';
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   //setting default values
   let statusCode = 500;
-  let message = 'Not found';
+  let message = 'No data found';
   let errorSources: TErrorSources = [
     {
       path: '',
-      message: 'Not found',
+      message: 'No data found',
     },
   ];
 
