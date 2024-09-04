@@ -7,9 +7,21 @@ import notFound from './app/middlewares/notFound';
 // Express app
 const app: Application = express();
 
-// parsers
+// CORS options
+const corsOptions = {
+  origin: [
+    'https://meeting-manager-frontend-orcin.vercel.app',
+    'http://localhost:5173',
+  ],
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true, // Allows cookies and other credentials to be sent from the frontend
+};
+
+// Use CORS with specific options
+app.use(cors(corsOptions));
+
+// Parsers
 app.use(express.json());
-app.use(cors());
 
 // Application route
 app.use('/api', router);
@@ -21,7 +33,7 @@ app.get('/', (req: Request, res: Response) => {
 
 app.use(globalErrorHandler);
 
-//Not Found
+// Not Found
 app.use(notFound);
 
 export default app;
