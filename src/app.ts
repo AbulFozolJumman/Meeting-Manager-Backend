@@ -10,11 +10,12 @@ const app: Application = express();
 // CORS options
 const corsOptions = {
   origin: [
+    'https://meeting-manager-frontend.netlify.app',
     'https://meeting-manager-frontend-orcin.vercel.app',
     'http://localhost:5173',
   ],
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true, // Allows cookies and other credentials to be sent from the frontend
+  methods: 'GET,PUT,PATCH,POST,DELETE',
+  credentials: true,
 };
 
 // Use CORS with specific options

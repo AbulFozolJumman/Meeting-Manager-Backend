@@ -34,12 +34,12 @@ The Meeting Manager is a backend service designed to handle room slot bookings f
 
 ### Slots
 
-- `POST /api/slots`: Create slots for a service (Admin only).
-- `GET /api/slots/availability`: Get available slots for a specific service. You can also query by date & roomId.
+- `POST /api/slots`: Create slots for a room (Admin only).
+- `GET /api/slots/availability`: Get available slots for a specific room. You can also query by date & roomId.
 
 ### Bookings
 
-- `POST /api/bookings`: Book a service (User only).
+- `POST /api/bookings`: Book a room (User only).
 - `GET /api/bookings`: Get all bookings (Admin only).
 - `GET /api/bookings/my-bookings`: Get bookings for the logged-in user.
 - `PUT /api/bookings/:id`: Update single booking (Admin only).
